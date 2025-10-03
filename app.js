@@ -51,11 +51,10 @@ function menu() {
 
         switch(opcion) {
             case "1":
-                // menú tipo de vehículo
                 let tipo;
                 do {
                     let tipoOpcion = prompt(
-                        "Seleccione el tipo de vehículo:\n" +
+                        "Seleccione el tipo de vehículo utilizando el numero:\n" +
                         "1 - Automotor\n" +
                         "2 - Motocicleta"
                     );
