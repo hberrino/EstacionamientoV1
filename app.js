@@ -1,17 +1,19 @@
 class Vehiculo {
-    constructor (tipo, patente, fechaIngreso, sigue){
-        this.tipo=tipo;
-        this.patente=patente;
+    constructor(tipo, patente) {
+        this.tipo = tipo;
+        this.patente = patente;
         this.fechaIngreso = new Date().toLocaleString();
-        this.sigue=true;
+        this.sigue = true;
     } 
 }
+
 class Estacionamiento {
-    static CAPACIDAD=30;
-    constructor(){
+    static CAPACIDAD = 30;
+    constructor() {
         this.espaciosDisponibles = Estacionamiento.CAPACIDAD;
         this.vehiculos = [];
     }
+
     registrar(tipo, patente) {
         if (this.espaciosDisponibles > 0) {
             let v = new Vehiculo(tipo, patente);
@@ -22,6 +24,7 @@ class Estacionamiento {
             return false; 
         }
     }
+
     retirar(patente) {
         let index = this.vehiculos.findIndex(v => v.patente === patente);
         if (index !== -1) {
@@ -30,10 +33,12 @@ class Estacionamiento {
             return true;                    
         } else {
             return false;                     
+        }
     }
-  }
 }
+
 let est = new Estacionamiento();
+
 function menu() {
     let opcion;
     do {
@@ -46,11 +51,25 @@ function menu() {
 
         switch(opcion) {
             case "1":
-                let tipo = prompt("Ingrese el tipo de vehículo:");
+                // menú tipo de vehículo
+                let tipo;
+                do {
+                    let tipoOpcion = prompt(
+                        "Seleccione el tipo de vehículo:\n" +
+                        "1 - Automotor\n" +
+                        "2 - Motocicleta"
+                    );
+
+                    if (tipoOpcion === "1") tipo = "Automotor";
+                    else if (tipoOpcion === "2") tipo = "Motocicleta";
+                    else alert("Opción inválida, intente nuevamente");
+
+                } while (!tipo);
+
                 let patente = prompt("Ingrese la patente:");
                 if (confirm(`Confirma registrar el vehículo ${tipo} con patente ${patente}?`)) {
                     if (est.registrar(tipo, patente)) {
-                        alert("Vehiculo registrado correctamente, bienvenido! | "+new Date().toLocaleString());
+                        alert("Vehiculo registrado correctamente, bienvenido! | " + new Date().toLocaleString());
                     } else {
                         alert("Estacionamiento sin espacios libres, lamentamos las molestias");
                     }
@@ -73,11 +92,11 @@ function menu() {
                 break;
 
             case "3":
-                alert("Saliendo del menu");
+                alert("Saliendo del menú");
                 break;
 
             default:
-                alert("Opcion incorrecta");
+                alert("Opción incorrecta");
         }
 
     } while(opcion !== "3");

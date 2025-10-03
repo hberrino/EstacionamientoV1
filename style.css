@@ -1,0 +1,38 @@
+h1 {
+    font-family: fantasy;
+    letter-spacing: 1px;
+    font-weight: lighter;
+    color: rgb(0, 255, 170);
+}
+body{
+    background-color: black;
+}
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid rgb(0, 255, 170);
+    background-color: black;
+    color: rgb(0, 255, 170);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+div {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;    
+    row-gap: 30px;             
+    margin-top: 50px;
+}
+button:hover {
+    background-color: rgb(0, 255, 170);
+    color: black;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgb(0, 255, 170);
+}
+img {
+    margin-bottom: 20px;
+    max-width: 90%;        
+    border-radius: 12px;   
+    box-shadow: 0 0 20px rgba(0, 255, 170, 0.5); 
+}
