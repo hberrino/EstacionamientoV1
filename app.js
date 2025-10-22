@@ -1,102 +1,103 @@
-class Vehiculo {
-    constructor(tipo, patente) {
-        this.tipo = tipo;
-        this.patente = patente;
-        this.fechaIngreso = new Date().toLocaleString();
-        this.sigue = true;
-    } 
+const botonMenu = document.getElementById("abrirMenu");
+const menu = document.getElementById("menu");
+const imagen = document.querySelector("img");
+const titulo = document.querySelector("h1");
+const cont = document.getElementById("contenido");
+
+const est = new Estacionamiento();
+
+botonMenu.addEventListener("click", () => {
+    const estaAbierto = menu.style.display === "flex";
+
+    if (estaAbierto) {
+        
+        menu.style.display = "none";
+        botonMenu.textContent = "Abrir menú";
+        imagen.style.display = "block";
+        titulo.style.display = "block";
+        cont.innerHTML = "";
+        cont.classList.remove("visible");
+
+    
+        const mainContainer = document.querySelector("body > div");
+        mainContainer.appendChild(botonMenu);
+        botonMenu.style.marginTop = "20px";
+    } else {
+        
+        menu.style.display = "flex";
+        botonMenu.textContent = "Cerrar menú";
+        imagen.style.display = "none";
+        titulo.style.display = "none";
+        
+        mostrarFormularioRegistro();
+
+        cont.insertAdjacentElement("afterend", botonMenu);
+        botonMenu.style.marginTop = "25px";
+    }
+});
+
+document.getElementById("registrarBtn").addEventListener("click", mostrarFormularioRegistro);
+document.getElementById("retirarBtn").addEventListener("click", mostrarFormularioRetiro);
+document.getElementById("verListaBtn").addEventListener("click", mostrarVehiculos);
+
+function mostrarFormularioRegistro() {
+    cont.classList.add("visible");
+    cont.innerHTML = `
+        <h3>Registrar vehículo</h3>
+        <select id="tipo">
+            <option value="Automotor">Automotor</option>
+            <option value="Motocicleta">Motocicleta</option>
+        </select>
+        <input type="text" id="patente" placeholder="Ingrese patente">
+        <button id="guardarVehiculo">Registrar</button>
+    `;
+
+    document.getElementById("guardarVehiculo").addEventListener("click", () => {
+        const tipo = document.getElementById("tipo").value;
+        const patente = document.getElementById("patente").value.trim();
+
+        if (patente) {
+            if (est.registrar(tipo, patente)) {
+                cont.innerHTML = `<p>Vehículo ${tipo} (${patente}) registrado con éxito.</p>`;
+            } else {
+                cont.innerHTML = `<p>No hay espacios disponibles.</p>`;
+            }
+        } else {
+            cont.innerHTML = `<p>Ingrese una patente válida.</p>`;
+        }
+    });
 }
 
-class Estacionamiento {
-    static CAPACIDAD = 30;
-    constructor() {
-        this.espaciosDisponibles = Estacionamiento.CAPACIDAD;
-        this.vehiculos = [];
-    }
+function mostrarFormularioRetiro() {
+    cont.classList.add("visible");
+    cont.innerHTML = `
+        <h3>Retirar vehículo</h3>
+        <input type="text" id="patenteRetiro" placeholder="Ingrese patente">
+        <button id="retirarVehiculo">Retirar</button>
+    `;
 
-    registrar(tipo, patente) {
-        if (this.espaciosDisponibles > 0) {
-            let v = new Vehiculo(tipo, patente);
-            this.vehiculos.push(v);
-            this.espaciosDisponibles--;
-            return true;
+    document.getElementById("retirarVehiculo").addEventListener("click", () => {
+        const patente = document.getElementById("patenteRetiro").value.trim();
+        if (est.retirar(patente)) {
+            cont.innerHTML = `<p>Vehículo con patente ${patente} retirado correctamente.</p>`;
         } else {
-            return false; 
+            cont.innerHTML = `<p>Vehículo no encontrado.</p>`;
         }
-    }
-
-    retirar(patente) {
-        let index = this.vehiculos.findIndex(v => v.patente === patente);
-        if (index !== -1) {
-            this.vehiculos.splice(index, 1); 
-            this.espaciosDisponibles++;      
-            return true;                    
-        } else {
-            return false;                     
-        }
-    }
+    });
 }
 
-let est = new Estacionamiento();
+function mostrarVehiculos() {
+    cont.classList.add("visible");
 
-function menu() {
-    let opcion;
-    do {
-        opcion = prompt(
-            "Seleccione una opción:\n" +
-            "1 - Registrar vehículo\n" +
-            "2 - Retirar vehículo\n" +
-            "3 - Salir"
-        );
+    if (est.vehiculos.length === 0) {
+        cont.innerHTML = `<p>No hay vehículos registrados.</p>`;
+        return;
+    }
 
-        switch(opcion) {
-            case "1":
-                let tipo;
-                do {
-                    let tipoOpcion = prompt(
-                        "Seleccione el tipo de vehículo utilizando el numero:\n" +
-                        "1 - Automotor\n" +
-                        "2 - Motocicleta"
-                    );
-
-                    if (tipoOpcion === "1") tipo = "Automotor";
-                    else if (tipoOpcion === "2") tipo = "Motocicleta";
-                    else alert("Opción inválida, intente nuevamente");
-
-                } while (!tipo);
-
-                let patente = prompt("Ingrese la patente:");
-                if (confirm(`Confirma registrar el vehículo ${tipo} con patente ${patente}?`)) {
-                    if (est.registrar(tipo, patente)) {
-                        alert("Vehiculo registrado correctamente, bienvenido! | " + new Date().toLocaleString());
-                    } else {
-                        alert("Estacionamiento sin espacios libres, lamentamos las molestias");
-                    }
-                } else {
-                    alert("Registro cancelado");
-                }
-                break;
-
-            case "2":
-                let patenteRetiro = prompt("Ingrese la patente del vehículo a retirar: ");
-                if (confirm(`Confirma retirar el vehículo con patente ${patenteRetiro}?`)) {
-                    if (est.retirar(patenteRetiro)) {
-                        alert("Retiro exitoso, hasta luego");
-                    } else {
-                        alert("Vehículo no encontrado");
-                    }
-                } else {
-                    alert("Retiro cancelado");
-                }
-                break;
-
-            case "3":
-                alert("Saliendo del menú");
-                break;
-
-            default:
-                alert("Opción incorrecta");
-        }
-
-    } while(opcion !== "3");
+    let html = "<h3>Vehículos estacionados</h3><ul>";
+    est.vehiculos.forEach(v => {
+        html += `<li>${v.tipo} - ${v.patente} (Ingreso: ${v.fechaIngreso})</li>`;
+    });
+    html += "</ul>";
+    cont.innerHTML = html;
 }

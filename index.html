@@ -1,17 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Estacionamiento</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div>
-    <h1>Estacionamiento</h1>
-    <img src="img/estacionamiento.jpg" alt="imagen estacionamiento">
-    <button onclick="menu()">Abrir menú</button>
+        <h1>Estacionamiento</h1>
+        <img src="img/estacionamiento.jpg" alt="imagen estacionamiento">
+
+        <button id="abrirMenu">Abrir menú</button>
+
+        <div id="menu" style="display: none;">
+            <button id="registrarBtn">Registrar vehículo</button>
+            <button id="retirarBtn">Retirar vehículo</button>
+            <button id="verListaBtn">Ver vehículos</button>
+        </div>
+
+        <div id="contenido"></div>
     </div>
+
+    <script src="clases.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
