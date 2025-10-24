@@ -44,12 +44,14 @@ function mostrarFormularioRegistro() {
     cont.classList.add("visible");
     cont.innerHTML = `
         <h3>Registrar vehículo</h3>
-        <select id="tipo">
-            <option value="Automotor">Automotor</option>
-            <option value="Motocicleta">Motocicleta</option>
-        </select>
-        <input type="text" id="patente" placeholder="Ingrese patente">
-        <button id="guardarVehiculo">Registrar</button>
+        <div id="formularioRegistro">
+            <select id="tipo">
+                <option value="Automotor">Automotor</option>
+                <option value="Motocicleta">Motocicleta</option>
+            </select>
+            <input type="text" id="patente" placeholder="Ingrese patente">
+            <button id="guardarVehiculo">Registrar</button>
+        </div>
     `;
 
     document.getElementById("guardarVehiculo").addEventListener("click", () => {
